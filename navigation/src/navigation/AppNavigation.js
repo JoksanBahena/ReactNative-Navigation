@@ -1,0 +1,103 @@
+import React from "react";
+import { StyleSheet } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import IndexScreen from "../screens/IndexScreen";
+import DetailsScreen from "../screens/DetailsScreen";
+import InformatiNScreen from "../screens/InformatiónScreen";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import IndexStack from "./IndexStack";
+import DetailsStack from "./DetailsStack";
+
+// const Drawer = createDrawerNavigator();
+
+// export default function AppNavigation() {
+//     return (
+//         <Drawer.Navigator>
+//             <Drawer.Screen
+//                 component={IndexScreen}
+//                 name='index'
+//                 option={{title:'Inicio'}}
+//             />
+//             <Drawer.Screen
+//                 component={DetailsScreen}
+//                 name='details'
+//                 option={{title:'Detalles'}}
+//             />
+//             <Drawer.Screen
+//                 component={InformatiNScreen}
+//                 name='information'
+//                 option={{title:'Detalles'}}
+//             />
+//         </Drawer.Navigator>
+//     )
+// }
+
+const Tab = createBottomTabNavigator();
+export default function AppNavigation() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        tabBarLabelStyle: {
+          fontSize: 10,
+        },
+        tabBarStyle: {
+          paddingBottom: 15,
+          height: 60,
+        },
+        headerShown: false
+      }}
+    >
+      <Tab.Screen
+        style={styles.text}
+        component={IndexStack}
+        name="Index"
+        options={{ title: "Inicio"}}
+      />
+      <Tab.Screen
+        component={DetailsStack}
+        name="Details"
+        options={{ title: "Detalles" }}
+      />
+      <Tab.Screen
+        component={InformatiNScreen}
+        name="Information"
+        options={{ title: "Informacion", headerShown: true }}
+      />
+    </Tab.Navigator>
+  );
+}
+
+/*const Stack = createNativeStackNavigator();
+
+export default function AppNavigation() {
+    return (
+            <Stack.Navigator>
+                <Stack.Screen
+                    component={IndexScreen}
+                    name='index'
+                    option={{title:'Inicio'}}
+                />
+                <Stack.Screen
+                    component={DetailsScreen}
+                    name='details'
+                    option={{title:'Detalles'}}
+                />
+                <Stack.Screen
+                    component={InformatiNScreen}
+                    name='information'
+                    option={{title:'Detalles'}}
+                />
+            </Stack.Navigator>
+    )
+}
+*/
+
+const styles = StyleSheet.create({
+  container: {
+    marginLeft: 60,
+  },
+  text: {
+    fontSize: 20,
+  },
+});
