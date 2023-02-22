@@ -8,6 +8,7 @@ import InformatiNScreen from "../screens/InformatiónScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import IndexStack from "./IndexStack";
 import DetailsStack from "./DetailsStack";
+import { Icon } from "react-native-elements";
 
 // const Drawer = createDrawerNavigator();
 
@@ -37,7 +38,7 @@ const Tab = createBottomTabNavigator();
 export default function AppNavigation() {
   return (
     <Tab.Navigator
-      screenOptions={{
+      screenOptions={({ route }) => ({
         tabBarLabelStyle: {
           fontSize: 10,
         },
@@ -45,27 +46,53 @@ export default function AppNavigation() {
           paddingBottom: 15,
           height: 60,
         },
-        headerShown: false
-      }}
+        headerShown: false,
+        tabBarActiveTintColor: "#00222a",
+        tabBarInactiveTintColor: "#a3b6ac",
+        tabBarIcon: ({ size }) => showIcons(route, size),
+      })}
     >
       <Tab.Screen
         style={styles.text}
         component={IndexStack}
         name="Index"
-        options={{ title: "Inicio"}}
+        options={{
+          title: "Inicio",
+        }}
       />
       <Tab.Screen
         component={DetailsStack}
         name="Details"
-        options={{ title: "Detalles" }}
+        options={{
+          title: "Detalles",
+        }}
       />
       <Tab.Screen
         component={InformatiNScreen}
         name="Information"
-        options={{ title: "Informacion", headerShown: true }}
+        options={{
+          title: "Informacion",
+          headerShown: true,
+        }}
       />
     </Tab.Navigator>
   );
+}
+
+function showIcons(route, size) {
+  let icono;
+
+  if (route.name === "Index") {
+    icono = "home-circle";
+  }
+  if (route.name === "Details") {
+    icono = "book-open-outline";
+  }
+  if (route.name === "Information") {
+    icono = "information-outline";
+  }
+
+  return <Icon type="material-community" name={icono} color={"black"} size={size}/>;
 }
 
 /*const Stack = createNativeStackNavigator();
