@@ -13,6 +13,10 @@ export default function IndexStack() {
         name = "indexS"
         component = {IndexScreen}
         options = {{title: "Inicio"}}/> 
+        <Stack.Screen
+        name = "loginS"
+        component = {LoginScreen}
+        options = {{title: "Iniciar Sesión"}}/> 
     </Stack.Navigator>
   )
 }
