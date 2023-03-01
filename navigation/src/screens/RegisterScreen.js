@@ -1,24 +1,19 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
+import RegisterForm from "../components/account/RegisterForm";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-export default function LoginScreen() {
-  const navigation = useNavigation();
-  console.log(navigation);
-  const aRegistro = () => {
-    navigation.navigate("registerS")
-  }
+export default function RegisterScreen() {
   return (
-    <View>
+    <KeyboardAwareScrollView>
       <Image
         source={require("../../assets/img/capi.png")}
         style={styles.logo}
       />
-      <Text>Formulario</Text>
-      <View>
-        <Text onPress={aRegistro}>Registrate</Text>
+      <View style={styles.viewForm}>
+        <RegisterForm/>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -28,5 +23,8 @@ const styles = StyleSheet.create({
     heigth: 150,
     resizeMode: "contain",
     marginTop: 20,
+  },
+  viewForm: {
+    marginHorizontal: 40
   },
 });

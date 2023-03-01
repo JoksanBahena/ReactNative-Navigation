@@ -10,6 +10,7 @@ export default function IndexScreen(props) {
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
+      setSession(user ? true : false)
     });
   }, []);
 
