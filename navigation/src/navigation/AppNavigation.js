@@ -9,6 +9,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import IndexStack from "./IndexStack";
 import DetailsStack from "./DetailsStack";
 import { Icon } from "react-native-elements";
+import ProfileStack from "./ProfileStack";
 
 // const Drawer = createDrawerNavigator();
 
@@ -68,11 +69,10 @@ export default function AppNavigation() {
         }}
       />
       <Tab.Screen
-        component={InformatiNScreen}
-        name="Information"
+        component={ProfileStack}
+        name="Profile"
         options={{
-          title: "Informacion",
-          headerShown: true,
+          title: "Perfil",
         }}
       />
     </Tab.Navigator>
@@ -88,11 +88,13 @@ function showIcons(route, size) {
   if (route.name === "Details") {
     icono = "book-open-outline";
   }
-  if (route.name === "Information") {
-    icono = "information-outline";
+  if (route.name === "Profile") {
+    icono = "account-outline";
   }
 
-  return <Icon type="material-community" name={icono} color={"black"} size={size}/>;
+  return (
+    <Icon type="material-community" name={icono} color={"black"} size={size} />
+  );
 }
 
 /*const Stack = createNativeStackNavigator();
