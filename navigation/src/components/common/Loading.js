@@ -22,7 +22,7 @@ Loading.defaultProps = {
 const styles = StyleSheet.create({
   overlay: {
     height: 100,
-    width: 200,
+    width: 250,
     backgroundColor: "#fff",
     borderColor: "#333",
     borderWidth: 0.5,

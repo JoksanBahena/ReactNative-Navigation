@@ -1,132 +1,87 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, {useEffect, useState}from "react";
+import { Icon } from "react-native-elements";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import IndexScreen from "../screens/IndexScreen";
-import DetailsScreen from "../screens/DetailsScreen";
-import InformatiNScreen from "../screens/InformatiónScreen";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import IndexStack from "./IndexStack";
 import DetailsStack from "./DetailsStack";
-import { Icon } from "react-native-elements";
 import ProfileStack from "./ProfileStack";
+import {getAuth, onAuthStateChanged} from 'firebase/auth';
 
-// const Drawer = createDrawerNavigator();
-
-// export default function AppNavigation() {
-//     return (
-//         <Drawer.Navigator>
-//             <Drawer.Screen
-//                 component={IndexScreen}
-//                 name='index'
-//                 option={{title:'Inicio'}}
-//             />
-//             <Drawer.Screen
-//                 component={DetailsScreen}
-//                 name='details'
-//                 option={{title:'Detalles'}}
-//             />
-//             <Drawer.Screen
-//                 component={InformatiNScreen}
-//                 name='information'
-//                 option={{title:'Detalles'}}
-//             />
-//         </Drawer.Navigator>
-//     )
-// }
 
 const Tab = createBottomTabNavigator();
+
 export default function AppNavigation() {
-  return (
+
+  const [session, setSession] = useState(null)
+
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth ,(user)=>{
+      setSession(user ? true : false)
+    })
+
+  
+  }, [])
+
+  return session ? (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarLabelStyle: {
-          fontSize: 10,
-        },
-        tabBarStyle: {
-          paddingBottom: 15,
-          height: 60,
-        },
-        headerShown: false,
-        tabBarActiveTintColor: "#00222a",
-        tabBarInactiveTintColor: "#a3b6ac",
-        tabBarIcon: ({ size }) => showIcons(route, size),
-      })}
-    >
-      <Tab.Screen
-        style={styles.text}
-        component={IndexStack}
-        name="Index"
-        options={{
-          title: "Inicio",
-        }}
-      />
-      <Tab.Screen
-        component={DetailsStack}
-        name="Details"
-        options={{
-          title: "Detalles",
-        }}
-      />
-      <Tab.Screen
-        component={ProfileStack}
-        name="Profile"
-        options={{
-          title: "Perfil",
-        }}
-      />
-    </Tab.Navigator>
-  );
+    screenOptions={({ route }) => ({
+      tabBarLabelStyle: {
+        fontSize: 10,
+      },
+      tabBarStyle: {
+        paddingBottom: 15,
+        height: 60,
+      },
+      headerShown: false,
+      tabBarActiveTintColor: "#00222a",
+      tabBarInactiveTintColor: "#a3b6ac",
+      tabBarIcon: ({ size }) => showIcons(route, size),
+    })}
+  >
+    <Tab.Screen
+      component={IndexStack}
+      name="index"
+      options={{
+        title: "Inicio",
+        // headerShown:false
+      }}
+    />
+    <Tab.Screen
+      component={DetailsStack}
+      name="details"
+      options={{
+        title: "Detalles",
+      }}
+    />
+    <Tab.Screen
+      component={ProfileStack}
+      name="profile"
+      options={{
+        title: "Perfil",
+      }}
+    />
+    {/* <Tab.Screen component={LoginSreen} name='login' options={{
+      title:'Inicio Sesión'
+  }}/> */}
+  </Tab.Navigator>
+   ) : (
+    <IndexStack>
+      
+    </IndexStack>
+   );
 }
-
-function showIcons(route, size) {
+function showIcons(route, color) {
   let icono;
-
-  if (route.name === "Index") {
+  if (route.name == "index") {
     icono = "home-circle";
   }
-  if (route.name === "Details") {
-    icono = "book-open-outline";
+  if (route.name == "details") {
+    icono = "details";
   }
-  if (route.name === "Profile") {
+  if (route.name == "profile") {
     icono = "account-outline";
   }
-
   return (
-    <Icon type="material-community" name={icono} color={"black"} size={size} />
+    <Icon type="material-community" name={icono} color={color} size={25} />
   );
 }
-
-/*const Stack = createNativeStackNavigator();
-
-export default function AppNavigation() {
-    return (
-            <Stack.Navigator>
-                <Stack.Screen
-                    component={IndexScreen}
-                    name='index'
-                    option={{title:'Inicio'}}
-                />
-                <Stack.Screen
-                    component={DetailsScreen}
-                    name='details'
-                    option={{title:'Detalles'}}
-                />
-                <Stack.Screen
-                    component={InformatiNScreen}
-                    name='information'
-                    option={{title:'Detalles'}}
-                />
-            </Stack.Navigator>
-    )
-}
-*/
-
-const styles = StyleSheet.create({
-  container: {
-    marginLeft: 60,
-  },
-  text: {
-    fontSize: 20,
-  },
-});
