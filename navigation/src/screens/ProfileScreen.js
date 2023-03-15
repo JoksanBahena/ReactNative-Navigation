@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import { Button } from "react-native-elements";
 import { getAuth, signOut } from "firebase/auth";
@@ -11,6 +11,9 @@ export default function ProfileScreen() {
   const navigation = useNavigation();
   const [visibleLoading, setVisibleLoading] = useState(false);
   const [textLoanding, setTextLoading] = useState("");
+  const [reload, setReload] = useState(false);
+
+  const onReload = () => setReload((prevState) => !prevState)
 
   const logout = async () => {
     const auth = getAuth();
@@ -23,7 +26,7 @@ export default function ProfileScreen() {
         setTextLoading={setTextLoading}
         setVisibleLoading={setVisibleLoading}
       />
-      <ProfileOptions />
+      <ProfileOptions reload={onReload}/>
       <Button
         title="Cerrar sesion"
         onPress={logout}
