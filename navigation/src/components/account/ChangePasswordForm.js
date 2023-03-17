@@ -4,6 +4,12 @@ import { Button, Input } from "react-native-elements";
 import { Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import Toast from "react-native-toast-message";
+import {
+  EmailAuthProvider,
+  getAuth,
+  reauthenticateWithCredential,
+  updatePassword,
+} from "firebase/auth";
 
 export default function ChangePasswordForm(props) {
   const { close } = props;
@@ -25,7 +31,13 @@ export default function ChangePasswordForm(props) {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       try {
-        console.log(formValue);
+        const user = getAuth().currentUser;
+        const credentials = EmailAuthProvider.credential(
+          user.email,
+          formValue.password
+        );
+        reauthenticateWithCredential(user, credentials);
+        await updatePassword(user, formValue.newPassword);
         close();
       } catch (error) {
         Toast.show({

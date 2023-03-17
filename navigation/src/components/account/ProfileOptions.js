@@ -5,6 +5,7 @@ import { map } from "lodash";
 import Modal from "../common/Modal";
 import ChangeNameForm from "./ChangeNameForm";
 import ChangePasswordForm from "./ChangePasswordForm";
+import ChangeEmailForm from "./ChangeEmailForm";
 
 export default function ProfileOptions(props) {
   const [showModal, setShowModal] = useState(false);
@@ -20,7 +21,11 @@ export default function ProfileOptions(props) {
     }
 
     if (key === "password") {
-      setConteined(<ChangePasswordForm close={onClose}/>);
+      setConteined(<ChangePasswordForm close={onClose} />);
+    }
+
+    if (key === "email") {
+      setConteined(<ChangeEmailForm close={onClose} />);
     }
     onClose();
   };
@@ -70,6 +75,14 @@ function getOptionsMenu(selectComponent) {
       colorIcon: "#ccc",
       nameIconRight: "chevron-right",
       onPress: () => selectComponent("password"),
+    },
+    {
+      title: "Cambiar email",
+      typeIcon: "material-community",
+      nameIconLeft: "email-sync-outline",
+      colorIcon: "#ccc",
+      nameIconRight: "chevron-right",
+      onPress: () => selectComponent("email"),
     },
   ];
 }
