@@ -25,7 +25,7 @@ export default function ProfileOptions(props) {
     }
 
     if (key === "email") {
-      setConteined(<ChangeEmailForm close={onClose} />);
+      setConteined(<ChangeEmailForm close={onClose} onReload={reload}/>);
     }
     onClose();
   };

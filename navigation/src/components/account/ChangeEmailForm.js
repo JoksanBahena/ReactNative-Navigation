@@ -4,24 +4,38 @@ import { Button, Input } from "react-native-elements";
 import { Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import Toast from "react-native-toast-message";
+import {
+  EmailAuthProvider,
+  getAuth,
+  reauthenticateWithCredential,
+  updateEmail,
+} from "firebase/auth";
 
 export default function ChangeEmailForm(props) {
-  const { close } = props;
+  const { close, onReload } = props;
   const [password, setPassword] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      email: "",
+      newEmail: "",
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Email obligatorio"),
+      newEmail: Yup.string().required("Email obligatorio"),
       password: Yup.string().required("Contraseña oblgatoria"),
     }),
     validateOnChange: false,
     onSubmit: async (formValue) => {
       try {
-        console.log(formValue);
+        const user = getAuth().currentUser;
+        const credentials = EmailAuthProvider.credential(
+          user.email,
+          formValue.password
+        );
+        reauthenticateWithCredential(user, credentials);
+        console.log(formValue.newEmail);
+        await updateEmail(user, formValue.newEmail);
+        onReload();
         close();
       } catch (error) {
         Toast.show({
@@ -47,8 +61,8 @@ export default function ChangeEmailForm(props) {
           name: "email-outline",
           color: "#c2c2c2",
         }}
-        onChangeText={(text) => formik.setFieldValue("email", text)}
-        errorMessage={formik.errors.email}
+        onChangeText={(text) => formik.setFieldValue("newEmail", text)}
+        errorMessage={formik.errors.newEmail}
       />
       <Input
         placeholder="Contraseña"
