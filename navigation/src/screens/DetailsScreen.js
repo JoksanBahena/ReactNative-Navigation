@@ -1,12 +1,19 @@
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import Carousel from "react-native-snap-carousel";
+import { Icon, Rating } from "react-native-elements";
+import Modal from "../components/common/Modal";
+import Video from "../components/common/Video";
 
 export default function DetailsScreen(props) {
   const { navigation } = props;
   const [data, setData] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [renderComponent, setRenderComponent] = useState(null);
   const carousel = useRef();
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const onClose = () => setShowModal((prevState) => !prevState);
 
   const getPlaces = async () => {
     try {
@@ -28,10 +35,46 @@ export default function DetailsScreen(props) {
     getPlaces();
   }, []);
 
-  const renderItem = () => {
+  const playVideo = (video) => {
+    setRenderComponent(<Video video={video}/>);
+    setShowModal(true);
+  };
+
+  const showLocation = () => {
+    setRenderComponent(<Text>Ubicacion</Text>);
+    setShowModal(true);
+  };
+
+  const renderItem = ({ index, item }) => {
     return (
       <View style={styles.card}>
-        <Text>HOLA</Text>
+        <Text style={styles.name}>{item.name}</Text>
+        <Image style={styles.img} source={{ uri: item.image }} />
+        <Text style={styles.description}>{item.description}</Text>
+        <Rating
+          type="star"
+          startingValue={parseFloat(item.rating)}
+          fractions={1}
+          readonly
+          imageSize={30}
+        />
+        <Text style={styles.ratingText}>{item.rating}</Text>
+        <View style={styles.icons}>
+          <Icon
+            type="material-community"
+            name="youtube"
+            color="red"
+            size={50}
+            onPress={() => playVideo(item.video)}
+          />
+          <Icon
+            type="material-community"
+            name="google-maps"
+            color="green"
+            size={50}
+            onPress={showLocation}
+          />
+        </View>
       </View>
     );
   };
@@ -44,7 +87,7 @@ export default function DetailsScreen(props) {
         source={require("../../assets/img/capibaraFondo.jpg")}
       >
         <Carousel
-          layout="default"
+          layout="tinder"
           ref={carousel}
           sliderWidth={400}
           itemWidth={400}
@@ -53,6 +96,11 @@ export default function DetailsScreen(props) {
           renderItem={renderItem}
         />
       </ImageBackground>
+      {renderComponent && (
+        <Modal visible={showModal} close={onClose}>
+          {renderComponent}
+        </Modal>
+      )}
     </View>
   );
 }
@@ -67,7 +115,6 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
-    opacity: 0.90
   },
   card: {
     backgroundColor: "#fff",
@@ -79,6 +126,34 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 4,
-    borderColor: "#ddad"
+    borderColor: "#ddad",
+  },
+  img: {
+    height: "40%",
+    width: "95%",
+    borderRadius: 15,
+    marginBottom: 10,
+  },
+  name: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  description: {
+    fontSize: 14,
+    marginBottom: 10,
+  },
+  rating: {
+    paddingVertical: 10,
+  },
+  ratingText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  icons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "45%",
   },
 });
