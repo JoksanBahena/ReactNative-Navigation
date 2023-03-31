@@ -4,6 +4,7 @@ import Carousel from "react-native-snap-carousel";
 import { Icon, Rating } from "react-native-elements";
 import Modal from "../components/common/Modal";
 import Video from "../components/common/Video";
+import Location from "../components/common/Location";
 
 export default function DetailsScreen(props) {
   const { navigation } = props;
@@ -36,12 +37,12 @@ export default function DetailsScreen(props) {
   }, []);
 
   const playVideo = (video) => {
-    setRenderComponent(<Video video={video}/>);
+    setRenderComponent(<Video video={video} />);
     setShowModal(true);
   };
 
   const showLocation = () => {
-    setRenderComponent(<Text>Ubicacion</Text>);
+    setRenderComponent(<Location />);
     setShowModal(true);
   };
 
